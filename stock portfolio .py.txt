@@ -1,0 +1,46 @@
+
+stock_prices = {
+    "AAPL": 190.5,
+    "GOOGL": 2720.4,
+    "TSLA": 845.2,
+    "MSFT": 315.0,
+    "AMZN": 139.3
+}
+
+portfolio = {}
+
+# Input from user
+while True:
+    stock = input("Enter stock symbol (e.g., AAPL) or 'done' to finish: ").upper()
+    if stock == "DONE":
+        break
+    elif stock in stock_prices:
+        try:
+            quantity = int(input(f"Enter quantity of {stock}: "))
+            portfolio[stock] = portfolio.get(stock, 0) + quantity
+        except ValueError:
+            print("Please enter a valid number.")
+    else:
+        print("Stock not found in database. Please try again.")
+
+# Calculate total investment
+total_value = 0
+print("\nYour Portfolio:")
+for stock, quantity in portfolio.items():
+    price = stock_prices[stock]
+    investment = quantity * price
+    total_value += investment
+    print(f"{stock} - {quantity} shares @ ?{price:.2f} = ?{investment:.2f}")
+
+print(f"\nTotal Investment Value: ?{total_value:.2f}")
+
+# (Optional) Save to file
+save = input("\nDo you want to save your portfolio to a file? (yes/no): ").lower()
+if save == "yes":
+    with open("portfolio_summary.txt", "w") as file:
+        for stock, quantity in portfolio.items():
+            price = stock_prices[stock]
+            investment = quantity * price
+            file.write(f"{stock} - {quantity} shares @ ?{price:.2f} = ?{investment:.2f}\n")
+        file.write(f"\nTotal Investment Value: ?{total_value:.2f}")
+    print("Portfolio saved to 'portfolio_summary.txt'")
